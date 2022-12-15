@@ -1,7 +1,9 @@
 public class Main {
+    public static Employee[] employees = new Employee[10];
+
     public static void main(String[] args) {
-        Employee[] employees = new Employee[10];
-        fillEmployees(employees); // заполняем массив с данными о сотрудниках, зарплатах, отделах и id;
+
+        fillEmployees(); // заполняем массив с данными о сотрудниках, зарплатах, отделах и id;
         printEmployees(employees); // печатаем полученый массив;
         printTotalSalary(employees); // печатаем сумму зарплат всех сотрудников;
         printLessSalary(employees); // сотрудник с минимально й зарплатой;
@@ -10,18 +12,17 @@ public class Main {
         printNames(employees);
         changeSalary(employees, 10); // Изменяем зарплату сотрудников на 10%. Перезаписываем данные в исходный массив и дальше работаем с измененным массивом;
         printEmployees(employees); // выводим измененный массив с данными сотрудников;
-        printLessSalary(createNewArrayDepartment(employees, 1, createSizeOfArray(employees, 1))); // выводим в консоль имя и зарплату сотрудника с минимальной зарплатой по данному отделу;
-        printMoreSalary(createNewArrayDepartment(employees, 2, createSizeOfArray(employees, 2))); // выводим в консоль имя и зарплату сотрудника с максимальной зарплатой по данному отделу;
-        printTotalSalary(createNewArrayDepartment(employees, 3, createSizeOfArray(employees, 3))); // общая сумма выплат всех зарплат по отделу;
-        printAmountSalary(createNewArrayDepartment(employees, 1, createSizeOfArray(employees, 1))); // Средняя зарплата по отделу;
-        changeSalary(createNewArrayDepartment(employees, 1, createSizeOfArray(employees, 1)), 10); // Изменяем (индексируем) зарплату всем сотрудникам указанного отдела;
-        printEmployees(createNewArrayDepartment(employees, 1, createSizeOfArray(employees, 1))); // Выводим все данные о сотрудниках данного отдела;
-        printEmployees(createNewArrayLessSalary(employees, 100_000, createSizeLessSalary(employees, 100_000))); // Передаем данные о сотрудниках, чьи зарплаты меньше указанной;
-        printEmployees(createNewArrayMoreSalary(employees, 60_000, createSizeMoreSalary(employees, 63_800))); // Передаем данняе о сотрудниках, чьи зарплаты меньше указанной;
-
+        printLessSalary(createNewArrayDepartment(1)); // выводим в консоль имя и зарплату сотрудника с минимальной зарплатой по данному отделу;
+        printMoreSalary(createNewArrayDepartment(2)); // выводим в консоль имя и зарплату сотрудника с максимальной зарплатой по данному отделу;
+        printTotalSalary(createNewArrayDepartment(3)); // общая сумма выплат всех зарплат по отделу;
+        printAmountSalary(createNewArrayDepartment(1)); // Средняя зарплата по отделу;
+        changeSalary(createNewArrayDepartment(1), 10); // Изменяем (индексируем) зарплату всем сотрудникам указанного отдела;
+        printEmployees(createNewArrayDepartment(1)); // Выводим все данные о сотрудниках данного отдела;
+        printEmployees(createNewArrayLessSalary(employees, 100_000, createSizeLessSalary(100_000))); // Передаем данные о сотрудниках, чьи зарплаты меньше указанной;
+        printEmployees(createNewArrayMoreSalary(60_000)); // Передаем данняе о сотрудниках, чьи зарплаты больше указанной;
     }
 
-    public static void fillEmployees(Employee[] employees) {
+    public static void fillEmployees() {
         employees[0] = new Employee("Иванов Иван Иванович", 110_000, 1);
         employees[1] = new Employee("Иванов Андрей Иванович", 114_000, 2);
         employees[2] = new Employee("Иванов Иван Андреевич", 86_000, 3);
@@ -37,12 +38,13 @@ public class Main {
 
 
     public static void printEmployees(Employee[] employees) {
-        for (int i = 0; i < employees.length; i++) {
-            System.out.println(employees[i].toString());
-        }
+        for (Employee employee : employees){
+            System.out.println(employee);
     }
 
-    public static int calculateTotalSalary(Employee[] employees) {
+}
+
+    public static int calculateTotalSalary() {
         int sum = 0;
         for (int i = 0; i < employees.length; i++) {
             sum += employees[i].getSalary();
@@ -52,10 +54,10 @@ public class Main {
     }
 
     public static void printTotalSalary(Employee[] employees) {
-        System.out.println("Общая сумма выплат: " + calculateTotalSalary(employees));
+        System.out.println("Общая сумма выплат: " + calculateTotalSalary());
     }
 
-    public static String findLessSalary(Employee[] employees) {
+    public static String findLessSalary() {
         int lessSalary = employees[0].getSalary();
         String lessEmployer = employees[0].getEmployer();
         for (int i = 0; i < employees.length; i++) {
@@ -68,7 +70,7 @@ public class Main {
     }
 
     public static void printLessSalary(Employee[] employees) {
-        System.out.println(findLessSalary(employees));
+        System.out.println(findLessSalary());
     }
 
     public static String findMoreSalary(Employee[] employees) {
@@ -88,7 +90,7 @@ public class Main {
     }
 
     public static int findAmountSalary(Employee[] employees) {
-        return calculateTotalSalary(employees) / employees.length;
+        return calculateTotalSalary() / employees.length;
     }
 
     public static void printAmountSalary(Employee[] employees) {
@@ -101,7 +103,7 @@ public class Main {
         }
     }
 
-    public static Employee[] changeSalary(Employee[] employees, int percent) {
+    public static Employee[] changeSalary(Employee[]employees, int percent) {
         for (int i = 0; i < employees.length; i++) {
             employees[i].setSalary((employees[i].getSalary() / 100 * percent) + employees[i].getSalary());
         }
@@ -118,7 +120,8 @@ public class Main {
         return size;
     }
 
-    public static Employee[] createNewArrayDepartment(Employee[] employees, int department, int size) {
+    public static Employee[] createNewArrayDepartment(int department) {
+        int size = createSizeOfArray(employees, department);
         Employee[] newArray = new Employee[size];
         int counter = 0;
         for (int i = 0; i < employees.length; i++) {
@@ -130,7 +133,7 @@ public class Main {
         return newArray;
     }
 
-    public static int createSizeLessSalary(Employee[] employees, int checkingSalary) {
+    public static int createSizeLessSalary(int checkingSalary) {
         int size = 0;
         for (int i = 0; i < employees.length; i++) {
             if (employees[i].getSalary() < checkingSalary) {
@@ -160,7 +163,8 @@ public class Main {
         }return size;
     }
 
-    public static Employee[] createNewArrayMoreSalary(Employee[] employees, int checkingSalary, int size) {
+    public static Employee[] createNewArrayMoreSalary(int checkingSalary) {
+        int size = createSizeMoreSalary(employees, checkingSalary);
         Employee[] checkingMoreSalary = new Employee[size];
         int counter = 0;
         for (int i = 0; i < employees.length; i++) {
